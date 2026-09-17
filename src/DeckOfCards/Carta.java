@@ -2,9 +2,8 @@ package DeckOfCards;
 
 /**
  * Write a description of class Carta here.
- *
  * @author (Cecilia Curlango Rosas)
- * @version (2025-2)
+ *
  */
 public abstract class Carta implements Comparable<Carta> {
     private int valor;
