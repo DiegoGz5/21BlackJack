@@ -18,6 +18,11 @@ public class TwentyOneGame {
     private ArrayList<Jugador> jugadores;
     private int jugadorActual;
 
+    // Pilas utilizadas para la función de deshacer
+    private Pila<CartaInglesa> cartasDeshacer;
+    private Pila<Integer> jugadoresDeshacer;
+    private Pila<Integer> turnosAnteriores;
+
     /**
      * Crea una partida con la cantidad de jugadores indicada.
      *
@@ -29,6 +34,10 @@ public class TwentyOneGame {
         dealer = new Dealer();
         jugadores = new ArrayList<>();
         jugadorActual = 0;
+
+        cartasDeshacer = new Pila<>();
+        jugadoresDeshacer = new Pila<>();
+        turnosAnteriores = new Pila<>();
 
         for (int i = 0; i < cantidadJugadores; i++) {
             jugadores.add(new Jugador());
@@ -54,6 +63,7 @@ public class TwentyOneGame {
 
     /**
      * Hace que el jugador actual reciba una carta.
+     * Guarda el movimiento para poder deshacerlo.
      */
     public void pedirCarta() {
 
@@ -61,12 +71,46 @@ public class TwentyOneGame {
 
         if (jugador.estaActivo()) {
 
-            jugador.recibirCarta(mazo.obtenerUnaCarta());
+            int turnoAnterior = jugadorActual;
+            CartaInglesa carta = mazo.obtenerUnaCarta();
+
+            jugador.recibirCarta(carta);
+
+            // Guardar información para poder deshacer
+            cartasDeshacer.push(carta);
+            jugadoresDeshacer.push(jugadorActual);
+            turnosAnteriores.push(turnoAnterior);
 
             if (!jugador.estaActivo()) {
                 siguienteJugador();
             }
         }
+    }
+
+    /**
+     * Deshace el último movimiento de pedir carta.
+     */
+    public void deshacer() {
+
+        if (!cartasDeshacer.estaVacia()) {
+
+            CartaInglesa carta = cartasDeshacer.pop();
+            int jugador = jugadoresDeshacer.pop();
+            int turnoAnterior = turnosAnteriores.pop();
+
+            // Quitar la última carta que recibió el jugador
+            jugadores.get(jugador).deshacerUltimaCarta();gi
+
+            // Regresar el turno al jugador que tenía el turno
+            jugadorActual = turnoAnterior;
+        }
+    }
+
+    /**
+     * Indica si existe algún movimiento que se pueda deshacer.
+     */
+    public boolean sePuedeDeshacer() {
+        return !cartasDeshacer.estaVacia();
     }
 
     /**
@@ -103,8 +147,9 @@ public class TwentyOneGame {
     }
 
     /**
-     * getter del dealer
-     * regresará dealer de la partida
+     * Getter del dealer.
+     *
+     * @return dealer de la partida
      */
     public Dealer getDealer() {
         return dealer;
@@ -112,17 +157,20 @@ public class TwentyOneGame {
 
     /**
      * Obtiene la lista de jugadores.
-     * jugadores de la partida
+     *
+     * @return jugadores de la partida
      */
     public ArrayList<Jugador> getJugadores() {
         return jugadores;
     }
 
     /**
-     * Obtiene el jugador cuyo turno está activo
-     * getter del jugador actual
+     * Obtiene el jugador cuyo turno está activo.
+     *
+     * @return jugador actual
      */
     public Jugador getJugadorActual() {
+
         if (jugadorActual < jugadores.size()) {
             return jugadores.get(jugadorActual);
         }
@@ -132,7 +180,8 @@ public class TwentyOneGame {
 
     /**
      * Indica si todos los jugadores terminaron su turno.
-     * va regresar true si ya no quedan jugadores activos
+     *
+     * @return true si ya no quedan jugadores activos
      */
     public boolean terminaronJugadores() {
         return jugadorActual >= jugadores.size();

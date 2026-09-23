@@ -288,12 +288,16 @@ public class TwentyOneGUI extends Application {
         Button stand =
                 crearBotonJuego("STAND");
 
+        Button undo =
+                crearBotonJuego("DESHACER");
+
         Button menuPrincipal =
                 crearBotonJuego("MENÚ PRINCIPAL");
 
 
         hit.setPrefWidth(110);
         stand.setPrefWidth(110);
+        undo.setPrefWidth(110);
         menuPrincipal.setPrefWidth(155);
 
 
@@ -315,7 +319,14 @@ public class TwentyOneGUI extends Application {
 
             actualizarMesa(stage);
         });
+        // DESHACER
 
+        undo.setOnAction(e -> {
+
+            juego.deshacer();
+
+            actualizarMesa(stage);
+        });
 
         // MENÚ PRINCIPAL
 
@@ -338,6 +349,7 @@ public class TwentyOneGUI extends Application {
         botones.getChildren().addAll(
                 hit,
                 stand,
+                undo,
                 menuPrincipal
         );
 

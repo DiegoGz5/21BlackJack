@@ -116,4 +116,14 @@ public class Jugador {
     public String toString() {
         return cartas + " Puntos: " + getPuntos();
     }
+
+    public void deshacerUltimaCarta() {
+
+        if (!cartas.estaVacia()) {
+            cartas.pop();
+
+            bust = false;
+            sePlanto = false;
+        }
+    }
 }
