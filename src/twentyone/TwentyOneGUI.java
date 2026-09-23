@@ -634,7 +634,7 @@ public class TwentyOneGUI extends Application {
     private void mostrarDealer(Stage stage) {
 
         for (CartaInglesa carta :
-                juego.getDealer().getCartas()) {
+                juego.getDealer().getCartas().getElementos()) {
 
             carta.makeFaceUp();
         }
@@ -912,12 +912,10 @@ public class TwentyOneGUI extends Application {
 
 
         for (CartaInglesa carta :
-                jugador.getCartas()) {
-
+                jugador.getCartas().getElementos()) {
 
             StackPane cartaVisual =
                     crearCartaVisual(carta);
-
 
             mano.getChildren().add(
                     cartaVisual

@@ -49,7 +49,7 @@ public class TwentyOneGame {
         dealer.recibirCarta(mazo.obtenerUnaCarta());
 
         CartaInglesa cartaOculta = mazo.obtenerUnaCarta();
-        dealer.getCartas().add(cartaOculta);
+        dealer.getCartas().push(cartaOculta);
     }
 
     /**

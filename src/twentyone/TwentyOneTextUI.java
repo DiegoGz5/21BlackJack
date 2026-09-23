@@ -88,7 +88,7 @@ public class TwentyOneTextUI {
         System.out.println("\n=== TURNO DEL DEALER ===");
 
         // Voltear todas las cartas del dealer
-        for (var carta : juego.getDealer().getCartas()) {
+        for (var carta : juego.getDealer().getCartas().getElementos()) {
             carta.makeFaceUp();
         }
 
